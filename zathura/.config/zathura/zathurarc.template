@@ -1,0 +1,44 @@
+# Zathura Gruvbox Material Dark
+
+set notification-error-bg       "{{bg}}"
+set notification-error-fg       "{{br_red}}"
+set notification-warning-bg     "{{bg}}"
+set notification-warning-fg     "{{br_yellow}}"
+set notification-bg             "{{bg}}"
+set notification-fg             "{{br_green}}"
+
+set completion-bg               "{{bg1}}"
+set completion-fg               "{{fg}}"
+set completion-group-bg         "{{bg1}}"
+set completion-group-fg         "{{gray}}"
+set completion-highlight-bg     "{{br_blue}}"
+set completion-highlight-fg     "{{bg1}}"
+
+set index-bg                    "{{bg}}"
+set index-fg                    "{{fg}}"
+set index-active-bg             "{{br_blue}}"
+set index-active-fg             "{{bg1}}"
+
+set inputbar-bg                 "{{bg}}"
+set inputbar-fg                 "{{fg}}"
+set statusbar-bg                "{{bg1}}"
+set statusbar-fg                "{{fg}}"
+
+set highlight-color             "{{br_yellow}}"
+set highlight-active-color      "{{br_orange}}"
+
+set default-bg                  "{{bg}}"
+set default-fg                  "{{fg}}"
+
+set render-loading              "true"
+set render-loading-fg           "{{bg}}"
+set render-loading-bg           "{{fg}}"
+
+# Recolor mode
+set recolor                     "true"
+set recolor-lightcolor          "{{bg}}"
+set recolor-darkcolor           "{{fg}}"
+
+set font                        "Atkinson Hyperlegible 11"
+set page-padding                8
+set selection-clipboard         "clipboard"

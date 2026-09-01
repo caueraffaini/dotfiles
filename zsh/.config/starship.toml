@@ -1,0 +1,36 @@
+# starship.toml — Gruvbox Material Minimal
+
+add_newline = false
+
+# Set the active palette
+palette = "gruvbox_material"
+
+[character]
+success_symbol = "[›](bold #fabd2f)"
+error_symbol = "[›](bold #fb4934)"
+
+[directory]
+style = "bold #ebdbb2"
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+style = "italic #fb4934"
+
+[git_status]
+style = "bold #fabd2f"
+
+[cmd_duration]
+min_time = 500
+style = "bold #83a598"
+
+[palettes.gruvbox_material]
+bg0 = '#282828'
+fg0 = '#ebdbb2'
+red = '#fb4934'
+green = '#b8bb26'
+yellow = '#fabd2f'
+blue = '#83a598'
+purple = '#d3869b'
+aqua = '#8ec07c'
+grey0 = '#928374'

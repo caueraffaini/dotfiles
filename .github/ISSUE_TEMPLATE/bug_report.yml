@@ -1,0 +1,49 @@
+name: Bug Report
+description: Report a broken configuration, stow conflict, or theme compilation issue
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please check existing issues before filing.
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected Package / Subsystem
+      description: Select the package experiencing the issue
+      options:
+        - install.sh / GNU Stow
+        - theme (palette.json / render-theme.py)
+        - hypr (Hyprland / hyprlock / hypridle)
+        - waybar
+        - swaync
+        - rofi
+        - ghostty
+        - zsh / starship
+        - nvim
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem Description
+      description: Provide a clear description of what is failing
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: How can this issue be reproduced?
+      placeholder: |
+        1. Run `./install.sh ...`
+        2. Inspect output
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / Error Output
+      description: Paste relevant terminal output or system journal logs
+      render: shell

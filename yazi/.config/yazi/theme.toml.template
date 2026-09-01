@@ -1,0 +1,132 @@
+# Gruvbox Material Dark — matches waybar/style.css palette
+
+[mgr]
+cwd = { fg = "{{br_yellow}}" }
+
+# Hovered items
+hovered         = { fg = "{{bg}}", bg = "{{br_yellow}}" }
+preview_hovered = { underline = true }
+
+# Find / search highlights
+find_keyword  = { fg = "{{br_red}}", bold = true, italic = true, underline = true }
+find_position = { fg = "{{orange}}", bold = true, italic = true }
+
+# Marker columns
+marker_copied   = { fg = "{{br_green}}", bg = "{{br_green}}" }
+marker_cut      = { fg = "{{br_red}}", bg = "{{br_red}}" }
+marker_marked   = { fg = "{{br_aqua}}", bg = "{{br_aqua}}" }
+marker_selected = { fg = "{{br_yellow}}", bg = "{{br_yellow}}" }
+
+# Tab indicator
+tab_active   = { fg = "{{bg}}", bg = "{{br_yellow}}" }
+tab_inactive = { fg = "{{fg}}", bg = "{{bg1}}" }
+tab_width    = 1
+
+# Border
+border_symbol = "▎"
+border_style  = { fg = "{{bg3}}" }
+
+# Highlighting
+syntect_theme = ""
+
+[mode]
+normal_main = { fg = "{{bg}}", bg = "{{br_yellow}}", bold = true }
+normal_alt  = { fg = "{{br_yellow}}", bg = "{{bg1}}" }
+
+select_main = { fg = "{{bg}}", bg = "{{br_green}}", bold = true }
+select_alt  = { fg = "{{br_green}}", bg = "{{bg1}}" }
+
+unset_main  = { fg = "{{bg}}", bg = "{{br_red}}", bold = true }
+unset_alt   = { fg = "{{br_red}}", bg = "{{bg1}}" }
+
+[status]
+separator_open  = ""
+separator_close = ""
+separator_style = { fg = "{{bg1}}", bg = "{{bg1}}" }
+
+# Progress bar
+progress_label  = { fg = "{{fg}}", bold = true }
+progress_normal = { fg = "{{br_yellow}}", bg = "{{bg1}}" }
+progress_error  = { fg = "{{br_red}}", bg = "{{bg1}}" }
+
+# Permissions colors
+permissions_t = { fg = "{{br_blue}}" }
+permissions_r = { fg = "{{br_yellow}}" }
+permissions_w = { fg = "{{br_red}}" }
+permissions_x = { fg = "{{br_green}}" }
+permissions_s = { fg = "{{br_purple}}" }
+
+[input]
+border   = { fg = "{{br_yellow}}" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+[confirm]
+border  = { fg = "{{br_yellow}}" }
+title   = { fg = "{{br_yellow}}" }
+content = {}
+list    = {}
+btn_yes = { reversed = true }
+btn_no  = {}
+
+[pick]
+border   = { fg = "{{br_yellow}}" }
+active   = { fg = "{{br_yellow}}", bold = true }
+inactive = {}
+
+[cmp]
+border        = { fg = "{{br_yellow}}" }
+active        = { bg = "{{bg1}}" }
+inactive      = {}
+
+[tasks]
+border  = { fg = "{{br_yellow}}" }
+title   = {}
+hovered = { underline = true }
+
+[which]
+mask            = { bg = "{{bg}}" }
+cand            = { fg = "{{br_blue}}" }
+rest            = { fg = "{{gray}}" }
+desc            = { fg = "{{br_purple}}" }
+separator       = "  "
+separator_style = { fg = "{{bg3}}" }
+
+[notify]
+title_info  = { fg = "{{br_green}}" }
+title_warn  = { fg = "{{br_yellow}}" }
+title_error = { fg = "{{br_red}}" }
+
+[help]
+on      = { fg = "{{br_yellow}}" }
+run     = { fg = "{{br_blue}}" }
+desc    = { fg = "{{fg}}" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "{{bg1}}", bg = "{{fg}}" }
+
+# File types
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*",  fg = "{{br_purple}}" },
+  # Videos
+  { mime = "video/*",  fg = "{{br_yellow}}" },
+  # Audio
+  { mime = "audio/*",  fg = "{{br_purple}}" },
+  # Archives
+  { mime = "application/zip",                fg = "{{br_red}}" },
+  { mime = "application/gzip",               fg = "{{br_red}}" },
+  { mime = "application/x-tar",              fg = "{{br_red}}" },
+  { mime = "application/x-bzip",             fg = "{{br_red}}" },
+  { mime = "application/x-bzip2",            fg = "{{br_red}}" },
+  { mime = "application/x-7z-compressed",    fg = "{{br_red}}" },
+  { mime = "application/x-rar",              fg = "{{br_red}}" },
+  { mime = "application/xz",                 fg = "{{br_red}}" },
+  # PDF / documents
+  { mime = "application/pdf",                fg = "{{br_blue}}" },
+  # Directories
+  { mime = "inode/directory", fg = "{{br_blue}}", bold = true },
+  # Fallback
+  { mime = "*",  fg = "{{fg}}" },
+]

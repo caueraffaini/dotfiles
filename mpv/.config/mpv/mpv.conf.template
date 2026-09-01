@@ -1,0 +1,33 @@
+# MPV Gruvbox + AC3 Transcoding (5.1 for limited HDMI)
+
+# The hardware (ELD) only supports LPCM 2.0 and AC3 5.1.
+# This config transcodes everything else to AC3 to keep 5.1 working.
+
+# Audio Output (Managed dynamically by auto-audio.lua)
+ao=pipewire
+audio-exclusive=no
+
+# Behavior
+save-position-on-quit=yes
+keep-open=yes
+
+# UI Colors (Gruvbox)
+osd-color='{{fg}}'
+osd-border-color='{{bg}}'
+osd-bar-align-y=0.9
+osd-bar-h=3
+osd-bar-w=60
+osd-font='Atkinson Hyperlegible'
+osd-font-size=22
+osd-duration=1200
+cursor-autohide=500
+
+# Video Settings
+vo=gpu
+hwdec=auto
+gpu-context=wayland
+
+# Screenshot
+screenshot-format=png
+screenshot-directory="~/Pictures/Screenshots"
+screenshot-template="mpv-screenshot-%n"

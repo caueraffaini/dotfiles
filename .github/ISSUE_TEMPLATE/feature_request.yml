@@ -1,0 +1,32 @@
+name: Feature Request
+description: Suggest a new package configuration, script utility, or theme enhancement
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to improve these dotfiles? Share your suggestion below.
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - New Stow Package
+        - Theming / Design Tokens
+        - Script / Utility (.local/bin)
+        - Workflow / CI Automation
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: Describe the feature and why it would be beneficial
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative solutions or workarounds you have considered?

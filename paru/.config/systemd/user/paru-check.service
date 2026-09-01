@@ -1,0 +1,6 @@
+[Unit]
+Description=Check for system updates and notify
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'n=$( (/usr/bin/checkupdates; /usr/bin/paru -Qua) 2>/dev/null | wc -l) && [ "$n" -gt 0 ] && /usr/bin/notify-send -i system-software-update "Updates available" "$n packages have updates"'

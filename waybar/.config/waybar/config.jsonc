@@ -1,0 +1,243 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 8,
+    "margin-left": 12,
+    "margin-right": 12,
+    "spacing": 0,
+    "modules-left": [
+        "group/left-group"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "group/media",
+        "group/connectivity",
+        "group/cpu-cluster",
+        "group/gpu-cluster",
+        "group/system-right",
+        "tray"
+    ],
+    "group/left-group": {
+        "orientation": "horizontal",
+        "modules": [
+            "clock",
+            "hyprland/workspaces",
+            "hyprland/window"
+        ]
+    },
+    "group/media": {
+        "orientation": "horizontal",
+        "spacing": 4,
+        "modules": [
+            "pulseaudio",
+            "pulseaudio#microphone",
+            "custom/backlight"
+        ]
+    },
+    "group/connectivity": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/vpn",
+            "network",
+            "custom/bluetooth-batt",
+            "custom/battery"
+        ]
+    },
+    "group/cpu-cluster": {
+        "orientation": "horizontal",
+        "modules": [
+            "cpu",
+            "memory",
+            "temperature"
+        ]
+    },
+    "group/gpu-cluster": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/gpu"
+        ]
+    },
+    "group/system-right": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/syshealth",
+            "custom/snapshots",
+            "custom/backup",
+            "custom/notification",
+            "custom/power",
+            "custom/powerbutton"
+        ]
+    },
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "persistent-workspaces": {}
+    },
+    "hyprland/window": {
+        "max-length": 60,
+        "separate-outputs": true
+    },
+    "clock": {
+        "format": "  {:%H:%M}",
+        "format-alt": "  {:%A, %d %B %Y}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "on-scroll": 1
+        }
+    },
+    "cpu": {
+        "format": " {usage}%",
+        "interval": 2,
+        "tooltip-format": "CPU: {usage}%\nUser: {user}%  Sys: {system}%\nIdle: {idle}%",
+        "on-click": "ghostty --class=com.tui.btop --window-width=120 --window-height=32 --confirm-close-surface=false -e btop"
+    },
+    "memory": {
+        "format": " {percentage}%",
+        "interval": 5,
+        "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
+        "on-click": "ghostty --class=com.tui.btop --window-width=120 --window-height=32 --confirm-close-surface=false -e btop"
+    },
+    "temperature": {
+        "hwmon-path": "/tmp/waybar-k10temp/temp1_input",
+        "critical-threshold": 90,
+        "format": " {temperatureC}°",
+        "format-critical": " {temperatureC}°",
+        "tooltip-format": "CPU temp: {temperatureC}°C",
+        "on-click": "ghostty --class=com.tui.btop --window-width=120 --window-height=32 --confirm-close-surface=false -e btop"
+    },
+    "network": {
+        "format-wifi": " {signalStrength}%",
+        "format-ethernet": " {ipaddr}",
+        "format-disconnected": " disconnected",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ipaddr}",
+        "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+        "on-click": "ghostty --class=com.tui.float --confirm-close-surface=false -e impala"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " muted",
+        "format-icons": {
+            "headphone": "",
+            "headset": "",
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        },
+        "tooltip-format": "{desc} — {volume}%",
+        "on-click": "ghostty --class=com.tui.float --confirm-close-surface=false -e pulsemixer",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    },
+    "tray": {
+        "spacing": 8,
+        "icon-size": 16
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "󰂚",
+            "none": "󰂜",
+            "dnd-notification": "󰂛",
+            "dnd-none": "󰂝",
+            "inhibited-notification": "󰂚",
+            "inhibited-none": "󰂜",
+            "dnd-inhibited-notification": "󰂛",
+            "dnd-inhibited-none": "󰂝"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+    "custom/backup": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/backup.sh",
+        "interval": 30,
+        "signal": 13
+    },
+    "custom/syshealth": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/syshealth.sh",
+        "interval": 120,
+        "signal": 15,
+        "on-click": "~/.local/bin/sysmenu"
+    },
+    "custom/snapshots": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/snapshots.sh",
+        "interval": 60,
+        "signal": 14
+    },
+    "custom/gpu": {
+        "exec": "~/.config/waybar/scripts/gpu.sh",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "ghostty --class=com.tui.btop --window-width=120 --window-height=32 --confirm-close-surface=false -e btop"
+    },
+    "custom/vpn": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/vpn.sh",
+        "interval": 10,
+        "on-click": "~/.config/waybar/scripts/vpn.sh toggle",
+        "signal": 12
+    },
+    "custom/bluetooth-batt": {
+        "exec": "~/.config/waybar/scripts/bluetooth-batt.sh",
+        "return-type": "json",
+        "interval": 30,
+        "on-click": "ghostty --class=com.tui.float --confirm-close-surface=false -e bluetui",
+        "signal": 11
+    },
+    "custom/battery": {
+        "exec": "~/.config/waybar/scripts/battery.sh",
+        "return-type": "json",
+        "interval": 10,
+        "on-click-right": "bash -c 'sudo /usr/local/bin/lenovo-conservation-toggle && pkill -RTMIN+8 waybar'",
+        "signal": 8
+    },
+    "custom/backlight": {
+        "exec": "~/.config/waybar/scripts/backlight.sh",
+        "return-type": "json",
+        "interval": 5,
+        "on-scroll-up": "~/.config/waybar/scripts/backlight.sh up",
+        "on-scroll-down": "~/.config/waybar/scripts/backlight.sh down",
+        "on-click-right": "~/.config/waybar/scripts/nightlight.sh toggle",
+        "signal": 9
+    },
+    "custom/power": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/waybar/scripts/power-menu.sh",
+        "interval": 5,
+        "on-click": "~/.config/waybar/scripts/power-menu.sh --menu",
+        "signal": 10
+    },
+    "custom/powerbutton": {
+        "format": "",
+        "tooltip": "Power menu",
+        "on-click": "~/.config/hypr/scripts/powermenu.sh"
+    },
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": " muted",
+        "on-click": "ghostty --class=com.tui.float --confirm-close-surface=false -e pulsemixer",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SOURCE@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
+        "tooltip-format": "{source_desc} — {source_volume}%"
+    }
+}

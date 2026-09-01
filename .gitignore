@@ -1,0 +1,59 @@
+# Neovim state (managed by lazy.nvim, per-machine lock)
+nvim/.config/nvim/lazy-lock.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Secrets, private keys, and credential stores
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.kdbx
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+*.age
+*.sops
+*.secret
+*.token
+
+# Local logs & AI transcript caches
+*.log
+.system_generated/
+ai-logs/
+
+# Editor temporary & swap files
+*~
+*.swp
+*.swo
+.DS_Store
+.directory
+
+# Machine-local / dynamic runtime carve-outs
+waybar/.config/waybar/k10temp
+hypr/.config/hypr/hypridle.conf
+
+# Shell history & state
+.*_history
+.history
+.lesshst
+.python_history
+
+# Cloud, auth, and credential stores
+.netrc
+.npmrc
+.pypirc
+credentials.json
+service-account*.json
+*.ovpn
+*.conf.local
+rclone.conf
+
+

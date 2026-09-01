@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# sysmenu — rofi "system actions" sheet. Single entry point fronting the
+# scattered reload/toggle/maintenance incantations. Click target of the
+# Waybar custom/syshealth module and SUPER+SHIFT+M.
+#
+# Only no-password actions inline (sys-reload, user units, polkit-allowed
+# hibernate/lock, scoped-NOPASSWD vpn). The snapshot action opens an
+# interactive terminal so sudo can prompt — never silent-sudo from rofi.
+set -euo pipefail
+
+RELOAD="${HOME}/.local/bin/sys-reload"
+VPN="${HOME}/.config/waybar/scripts/vpn.sh"
+
+options="\
+ Reload Waybar
+ Reload Hyprland
+ Reload All
+󰦝 Toggle VPN
+󰕒 Backup now
+󰜉 Snapshot now
+ Lock
+󰒲 Hibernate"
+
+chosen=$(printf '%s' "$options" | rofi -dmenu -i -p "  system" \
+    -theme-str 'listview {lines: 8;} window {width: 320px;}')
+
+case "$chosen" in
+    " Reload Waybar")    "$RELOAD" waybar ;;
+    " Reload Hyprland")  "$RELOAD" hypr ;;
+    " Reload All")       "$RELOAD" all ;;
+    "󰦝 Toggle VPN")       "$VPN" toggle ;;
+    "󰕒 Backup now")
+        systemctl --user start restic-backup.service
+        notify-send -u normal "sysmenu" "restic-backup started — watch the Waybar backup glyph"
+        ;;
+    "󰜉 Snapshot now")
+        # Interactive terminal so sudo can prompt for the password.
+        ghostty --class=com.tui.float --confirm-close-surface=false -e \
+            sh -c 'sudo snapper -c root create -d "manual (sysmenu)" && echo "snapshot created" && sleep 2'
+        ;;
+    " Lock")             loginctl lock-session ;;
+    "󰒲 Hibernate")        systemctl hibernate ;;
+    *) exit 0 ;;
+esac

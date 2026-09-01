@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# ai-log — transcript-log a claude/gemini session, then exec the real CLI.
+#
+#   ai-log <claude|gemini> [args...]
+#
+# Captures the full session via script(1) to ~/.local/share/ai-logs/, keeps
+# the newest $KEEP logs, and preserves the CLI's exit code and TTY. Bypass
+# with AI_LOG=0 (e.g. AI_LOG=0 claude). The bare tool name is resolved from
+# PATH inside script(1) (the zsh wrapper functions are shell-local and not
+# visible here) so there is no recursion and no version pinning.
+set -uo pipefail
+
+KEEP=30
+LOGDIR="${HOME}/.local/share/ai-logs"
+
+tool="${1:-}"; shift 2>/dev/null || true
+case "$tool" in
+    claude|gemini) ;;
+    *) echo "usage: ai-log <claude|gemini> [args...]" >&2; exit 2 ;;
+esac
+
+# Opt-out — run the real CLI untouched.
+if [[ "${AI_LOG:-1}" == "0" ]]; then
+    exec "$tool" "$@"
+fi
+
+if ! command -v script >/dev/null 2>&1; then
+    exec "$tool" "$@"          # util-linux missing → never block the CLI
+fi
+
+mkdir -p "$LOGDIR"
+chmod 700 "$LOGDIR" 2>/dev/null || true
+
+# Prune: keep the $KEEP newest logs (cheap, runs each launch).
+# shellcheck disable=SC2012
+/usr/bin/ls -1t "$LOGDIR"/*.log 2>/dev/null | /usr/bin/tail -n +$((KEEP + 1)) \
+    | /usr/bin/xargs -r rm -f
+
+ts=$(/usr/bin/date +%Y%m%d-%H%M%S)
+log="${LOGDIR}/${tool}-${ts}.log"
+( umask 077; : > "$log" )      # 600 transcript (may contain pasted secrets)
+
+# Safe arg requoting for script -c.
+cmdstr=$(printf '%q ' "$tool" "$@")
+
+/usr/bin/script -q -e -c "$cmdstr" "$log"
+exit $?

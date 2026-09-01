@@ -1,0 +1,132 @@
+# Gruvbox Material Dark — matches waybar/style.css palette
+
+[mgr]
+cwd = { fg = "#fabd2f" }
+
+# Hovered items
+hovered         = { fg = "#282828", bg = "#fabd2f" }
+preview_hovered = { underline = true }
+
+# Find / search highlights
+find_keyword  = { fg = "#fb4934", bold = true, italic = true, underline = true }
+find_position = { fg = "#d65d0e", bold = true, italic = true }
+
+# Marker columns
+marker_copied   = { fg = "#b8bb26", bg = "#b8bb26" }
+marker_cut      = { fg = "#fb4934", bg = "#fb4934" }
+marker_marked   = { fg = "#8ec07c", bg = "#8ec07c" }
+marker_selected = { fg = "#fabd2f", bg = "#fabd2f" }
+
+# Tab indicator
+tab_active   = { fg = "#282828", bg = "#fabd2f" }
+tab_inactive = { fg = "#ebdbb2", bg = "#3c3836" }
+tab_width    = 1
+
+# Border
+border_symbol = "▎"
+border_style  = { fg = "#665c54" }
+
+# Highlighting
+syntect_theme = ""
+
+[mode]
+normal_main = { fg = "#282828", bg = "#fabd2f", bold = true }
+normal_alt  = { fg = "#fabd2f", bg = "#3c3836" }
+
+select_main = { fg = "#282828", bg = "#b8bb26", bold = true }
+select_alt  = { fg = "#b8bb26", bg = "#3c3836" }
+
+unset_main  = { fg = "#282828", bg = "#fb4934", bold = true }
+unset_alt   = { fg = "#fb4934", bg = "#3c3836" }
+
+[status]
+separator_open  = ""
+separator_close = ""
+separator_style = { fg = "#3c3836", bg = "#3c3836" }
+
+# Progress bar
+progress_label  = { fg = "#ebdbb2", bold = true }
+progress_normal = { fg = "#fabd2f", bg = "#3c3836" }
+progress_error  = { fg = "#fb4934", bg = "#3c3836" }
+
+# Permissions colors
+permissions_t = { fg = "#83a598" }
+permissions_r = { fg = "#fabd2f" }
+permissions_w = { fg = "#fb4934" }
+permissions_x = { fg = "#b8bb26" }
+permissions_s = { fg = "#d3869b" }
+
+[input]
+border   = { fg = "#fabd2f" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+[confirm]
+border  = { fg = "#fabd2f" }
+title   = { fg = "#fabd2f" }
+content = {}
+list    = {}
+btn_yes = { reversed = true }
+btn_no  = {}
+
+[pick]
+border   = { fg = "#fabd2f" }
+active   = { fg = "#fabd2f", bold = true }
+inactive = {}
+
+[cmp]
+border        = { fg = "#fabd2f" }
+active        = { bg = "#3c3836" }
+inactive      = {}
+
+[tasks]
+border  = { fg = "#fabd2f" }
+title   = {}
+hovered = { underline = true }
+
+[which]
+mask            = { bg = "#282828" }
+cand            = { fg = "#83a598" }
+rest            = { fg = "#928374" }
+desc            = { fg = "#d3869b" }
+separator       = "  "
+separator_style = { fg = "#665c54" }
+
+[notify]
+title_info  = { fg = "#b8bb26" }
+title_warn  = { fg = "#fabd2f" }
+title_error = { fg = "#fb4934" }
+
+[help]
+on      = { fg = "#fabd2f" }
+run     = { fg = "#83a598" }
+desc    = { fg = "#ebdbb2" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "#3c3836", bg = "#ebdbb2" }
+
+# File types
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*",  fg = "#d3869b" },
+  # Videos
+  { mime = "video/*",  fg = "#fabd2f" },
+  # Audio
+  { mime = "audio/*",  fg = "#d3869b" },
+  # Archives
+  { mime = "application/zip",                fg = "#fb4934" },
+  { mime = "application/gzip",               fg = "#fb4934" },
+  { mime = "application/x-tar",              fg = "#fb4934" },
+  { mime = "application/x-bzip",             fg = "#fb4934" },
+  { mime = "application/x-bzip2",            fg = "#fb4934" },
+  { mime = "application/x-7z-compressed",    fg = "#fb4934" },
+  { mime = "application/x-rar",              fg = "#fb4934" },
+  { mime = "application/xz",                 fg = "#fb4934" },
+  # PDF / documents
+  { mime = "application/pdf",                fg = "#83a598" },
+  # Directories
+  { mime = "inode/directory", fg = "#83a598", bold = true },
+  # Fallback
+  { mime = "*",  fg = "#ebdbb2" },
+]

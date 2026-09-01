@@ -1,0 +1,6 @@
+[Unit]
+Description=Detect dotfiles drift (stow link integrity + uncommitted changes)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/dotfiles-drift/drift-check.sh

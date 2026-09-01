@@ -1,0 +1,137 @@
+/* Gruvbox Material Dark userChrome.css */
+
+:root {
+  --gruvbox-dark0: #282828;
+  --gruvbox-dark1: #32302f;
+  --gruvbox-dark2: #3c3836;
+  --gruvbox-fg0: #dfbf8e;
+  --gruvbox-fg1: #d4be98;
+  --gruvbox-gray: #928374;
+  --gruvbox-red: #ea6962;
+  --gruvbox-green: #a9b665;
+  --gruvbox-yellow: #d8a657;
+  --gruvbox-blue: #7daea3;
+  --gruvbox-purple: #d3869b;
+  --gruvbox-aqua: #89b482;
+  --gruvbox-orange: #e78a4e;
+
+  /* Global UI Variables */
+  --lwt-text-color: var(--gruvbox-fg1) !important;
+  --toolbar-bgcolor: var(--gruvbox-dark0) !important;
+  --toolbar-color: var(--gruvbox-fg1) !important;
+  --tab-selected-textcolor: var(--gruvbox-fg0) !important;
+  --tab-text-color: var(--gruvbox-fg1) !important;
+  --tab-selected-bgcolor: var(--gruvbox-dark2) !important;
+  --lwt-tab-text: var(--gruvbox-fg1) !important;
+  --lwt-selected-tab-color: var(--gruvbox-fg0) !important;
+
+  /* Urlbar Variables */
+  --toolbar-field-background-color: var(--gruvbox-dark1) !important;
+  --toolbar-field-color: var(--gruvbox-fg0) !important;
+  --toolbar-field-focus-background-color: var(--gruvbox-dark2) !important;
+  --toolbar-field-focus-color: var(--gruvbox-fg0) !important;
+  --toolbar-field-border-color: var(--gruvbox-dark2) !important;
+  --toolbar-field-focus-border-color: var(--gruvbox-blue) !important;
+
+  /* Popup/Menu Variables */
+  --arrowpanel-background: var(--gruvbox-dark1) !important;
+  --arrowpanel-color: var(--gruvbox-fg1) !important;
+  --arrowpanel-border-color: var(--gruvbox-dark2) !important;
+  --menu-background-color: var(--gruvbox-dark1) !important;
+  --menu-color: var(--gruvbox-fg1) !important;
+  --menu-border-color: var(--gruvbox-dark2) !important;
+  --menuitem-hover-background-color: var(--gruvbox-dark2) !important;
+}
+
+/* Toolbar and Tabs */
+#nav-bar, #TabsToolbar, #PersonalToolbar {
+  background-color: var(--gruvbox-dark0) !important;
+  color: var(--gruvbox-fg1) !important;
+}
+
+.tabbrowser-tab {
+  color: var(--gruvbox-fg1) !important;
+}
+
+.tabbrowser-tab:hover:not([selected="true"]) .tab-background {
+  background-color: var(--gruvbox-dark2) !important;
+}
+
+.tab-background {
+  background-color: var(--gruvbox-dark1) !important;
+}
+
+.tab-background[selected="true"],
+.tabbrowser-tab[selected="true"] .tab-background {
+  background-color: var(--gruvbox-dark2) !important;
+  border-top: 2px solid var(--gruvbox-green) !important;
+}
+
+.tabbrowser-tab[selected="true"],
+.tabbrowser-tab:is([selected="true"], [multiselected="true"]) {
+  color: var(--gruvbox-fg0) !important;
+  font-weight: 500;
+}
+
+.tabbrowser-tab .tab-label,
+.tabbrowser-tab .tab-text {
+  color: inherit !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-label,
+.tabbrowser-tab[selected="true"] .tab-text {
+  color: var(--gruvbox-fg0) !important;
+}
+
+.tab-close-button {
+  color: var(--gruvbox-gray) !important;
+}
+
+.tab-close-button:hover {
+  color: var(--gruvbox-red) !important;
+}
+
+/* Urlbar specific overrides to fix white background on click */
+#urlbar-background {
+  background-color: var(--toolbar-field-background-color) !important;
+  border: 1px solid var(--toolbar-field-border-color) !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background,
+#urlbar[open="true"] > #urlbar-background {
+  background-color: var(--toolbar-field-focus-background-color) !important;
+  border-color: var(--toolbar-field-focus-border-color) !important;
+}
+
+#urlbar-input-container {
+  color: var(--toolbar-field-color) !important;
+}
+
+#urlbar[focused="true"] #urlbar-input-container {
+  color: var(--toolbar-field-focus-color) !important;
+}
+
+/* Sidebar and Menus */
+#sidebar-box {
+  --sidebar-background-color: var(--gruvbox-dark0) !important;
+  --sidebar-text-color: var(--gruvbox-fg1) !important;
+}
+
+/* Menus, Panels, Tooltips */
+menupopup, panel, tooltip {
+  --panel-background: var(--menu-background-color) !important;
+  --panel-color: var(--menu-color) !important;
+  --panel-border-color: var(--menu-border-color) !important;
+  background-color: var(--menu-background-color) !important;
+  color: var(--menu-color) !important;
+}
+
+menu, menuitem {
+  color: var(--menu-color) !important;
+}
+
+menu[_moz-menuactive="true"],
+menuitem[_moz-menuactive="true"] {
+  background-color: var(--menuitem-hover-background-color) !important;
+  color: var(--gruvbox-fg0) !important;
+}

@@ -1,0 +1,36 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install ShellCheck & Lua
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck lua5.4
+
+      - name: Validate Shell Syntax
+        run: |
+          bash -n install.sh
+          shellcheck -S warning install.sh
+          find . -name "*.sh" -not -path "*/.git/*" -exec bash -n {} +
+
+      - name: Validate Lua Syntax
+        run: |
+          find . -name "*.lua" -not -path "*/.git/*" -exec luac -p {} +
+
+      - name: Verify Theme Template SSoT Integrity
+        run: |
+          python3 theme/.config/theme/render-theme.py --check

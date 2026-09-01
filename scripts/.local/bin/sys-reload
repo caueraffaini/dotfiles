@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+# sys-reload — validate + reload Hyprland/Waybar/swaync/power-sync/theme
+# usage: sys-reload [waybar|hypr|swaync|power-sync|theme|all]
+set -euo pipefail
+
+TARGET=${1:-all}
+DOTFILES="${HOME}/dotfiles"
+CFG_WAYBAR="${HOME}/.config/waybar/config.jsonc"
+
+notify() { command -v notify-send >/dev/null 2>&1 && notify-send -u "${1}" "sys-reload" "${2}" || true; }
+
+check_waybar_json() {
+    python3 - "$CFG_WAYBAR" <<'PYEOF'
+import sys, json, re
+txt = open(sys.argv[1]).read()
+txt = re.sub(r'//[^\n]*', '', txt)
+txt = re.sub(r'/\*.*?\*/', '', txt, flags=re.DOTALL)
+txt = re.sub(r',\s*([}\]])', r'\1', txt)
+try:
+    json.loads(txt)
+except json.JSONDecodeError as e:
+    print(e, file=sys.stderr)
+    sys.exit(1)
+PYEOF
+}
+
+reload_waybar() {
+    local errtmp
+    errtmp=$(mktemp)
+    if ! check_waybar_json 2>"$errtmp"; then
+        notify critical "waybar config.jsonc invalid — not reloaded: $(cat "$errtmp")"
+        rm -f "$errtmp"
+        return 1
+    fi
+    rm -f "$errtmp"
+    killall waybar 2>/dev/null || true
+    sleep 0.2
+    if command -v systemd-run >/dev/null 2>&1; then
+        systemd-run --user --unit="waybar-$(date +%s%N)" /usr/bin/waybar >/dev/null 2>&1 || (nohup waybar >/dev/null 2>&1 & disown)
+    else
+        nohup waybar >/dev/null 2>&1 &
+        disown
+    fi
+    notify low "waybar reloaded"
+}
+
+reload_hypr() {
+    if command -v hyprctl >/dev/null 2>&1; then
+        hyprctl reload >/dev/null 2>&1 || true
+        notify low "hyprland reloaded"
+    fi
+}
+
+reload_swaync() {
+    if command -v swaync-client >/dev/null 2>&1; then
+        swaync-client --reload-config 2>/dev/null || swaync-client -rs 2>/dev/null || true
+        notify low "swaync reloaded"
+    fi
+}
+
+reload_ghostty() {
+    # Ghostty reloads on SIGUSR1
+    killall -SIGUSR1 ghostty 2>/dev/null || true
+}
+
+reload_power_sync() {
+    killall power-sync.sh hypridle 2>/dev/null || true
+    if [[ -x "${HOME}/.config/hypr/scripts/power-sync.sh" ]]; then
+        nohup "${HOME}/.config/hypr/scripts/power-sync.sh" >/dev/null 2>&1 &
+        disown
+        notify low "power-sync restarted"
+    fi
+}
+
+reload_theme() {
+    local renderer="${DOTFILES}/theme/.config/theme/render-theme.py"
+    if [[ ! -f "$renderer" ]]; then
+        renderer="${HOME}/.config/theme/render-theme.py"
+    fi
+    if [[ -f "$renderer" ]]; then
+        python3 "$renderer"
+        reload_hypr
+        reload_waybar
+        reload_swaync
+        reload_ghostty
+        notify low "theme recompiled and desktop reloaded"
+    else
+        notify critical "theme renderer not found"
+        return 1
+    fi
+}
+
+case "$TARGET" in
+    waybar)     reload_waybar ;;
+    hypr)       reload_hypr ;;
+    swaync)     reload_swaync ;;
+    ghostty)    reload_ghostty ;;
+    power-sync) reload_power_sync ;;
+    theme)      reload_theme ;;
+    all)
+        reload_hypr
+        reload_waybar
+        reload_swaync
+        reload_ghostty
+        reload_power_sync
+        ;;
+    *)
+        echo "usage: sys-reload [waybar|hypr|swaync|ghostty|power-sync|theme|all]" >&2
+        exit 1
+        ;;
+esac

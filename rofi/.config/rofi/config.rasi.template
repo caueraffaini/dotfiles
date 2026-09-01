@@ -1,0 +1,110 @@
+/*
+ * Gruvbox Material Dark — rofi launcher
+ *
+ * Foundation pass tokens:
+ *   Spacing : 4 / 8 / 12 / 16
+ *   Radius  : outer = 10 (window), inner = 4 (inputbar, element)
+ *   Accent  : br-yellow = focus  ·  br-aqua = info
+ */
+
+configuration {
+    modi:                   "drun,run,window";
+    font:                   "Atkinson Hyperlegible 13";
+    show-icons:             true;
+    icon-theme:             "Gruvbox-Plus-Dark";
+    terminal:               "ghostty";
+    drun-display-format:    "{name}";
+    hover-select:           true;
+    me-select-entry:        "";
+    me-accept-entry:        "MousePrimary";
+    /* Mode prompt glyphs — Nerd Font Material Design icons */
+    display-drun:           " ";
+    display-run:            " ";
+    display-window:         " ";
+}
+
+* {
+    bg:      {{bg}};
+    bg1:     {{bg1}};
+    bg2:     {{bg2}};
+    fg:      {{fg}};
+    fg2:     {{fg1}};
+    gray:    {{gray}};
+    yellow:  {{br_yellow}};
+    blue:    {{br_blue}};
+    red:     {{br_red}};
+    aqua:    {{br_aqua}};
+    border:  {{bg3}};
+
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+window {
+    background-color: @bg;
+    border:           1px;
+    border-color:     @border;
+    border-radius:    10px;
+    padding:          0;
+    width:            480px;
+}
+
+mainbox {
+    background-color: transparent;
+    children:         [ inputbar, listview ];
+    padding:          12px;
+    spacing:          8px;
+}
+
+inputbar {
+    background-color: @bg1;
+    border-radius:    4px;
+    padding:          8px 12px;
+    spacing:          8px;
+    children:         [ prompt, entry ];
+}
+
+/* Prompt — focus-yellow accent, font from configuration block */
+prompt {
+    text-color: @yellow;
+    font:       "EB Garamond Bold 16";
+}
+
+entry {
+    text-color:        @fg;
+    cursor-color:      @yellow;
+    placeholder:       "type to search";
+    placeholder-color: @gray;
+}
+
+listview {
+    background-color: transparent;
+    lines:            8;
+    spacing:          4px;
+    scrollbar:        false;
+    fixed-height:     false;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    4px;
+    padding:          8px 12px;
+    spacing:          12px;
+    orientation:      horizontal;
+}
+
+element selected {
+    background-color: @bg2;
+    text-color:       @fg;
+    border:           0 0 0 3px;
+    border-color:     @yellow;
+    border-radius:    0 4px 4px 0;
+}
+
+element-icon {
+    size: 20px;
+}
+
+element-text {
+    text-color: inherit;
+}

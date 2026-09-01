@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# ai-ctx — per-project AI context helper. Claude Code already auto-loads
+# CLAUDE.md and Gemini auto-loads GEMINI.md hierarchically; this just adds
+# discovery (which file is active here), a $AI_PROJECT_CONTEXT env for the
+# zsh chpwd hook, and an on-demand AGENTS.md scaffolder for repos that have
+# no convention file yet. It never auto-writes — `init` is explicit and
+# refuses to overwrite.
+#
+#   ai-ctx [path]   print the active context file path (default)
+#   ai-ctx show     cat it
+#   ai-ctx init     scaffold AGENTS.md at the repo root from repo signals
+set -uo pipefail
+
+# Priority order: native tool files first, then generic, then nested.
+CANDIDATES=(CLAUDE.md GEMINI.md AGENTS.md .ai/context.md)
+
+repo_root() { git rev-parse --show-toplevel 2>/dev/null; }
+
+find_ctx() {
+    local root; root=$(repo_root) || return 1
+    local c
+    for c in "${CANDIDATES[@]}"; do
+        [[ -f "$root/$c" ]] && { printf '%s\n' "$root/$c"; return 0; }
+    done
+    return 1
+}
+
+detect_stack() {
+    local root="$1" s=()
+    [[ -f $root/Cargo.toml ]]                       && s+=("Rust (cargo build / cargo test)")
+    [[ -f $root/package.json ]]                     && s+=("Node (npm/pnpm; check scripts in package.json)")
+    [[ -f $root/pyproject.toml || -f $root/requirements.txt ]] && s+=("Python (pytest; venv/uv)")
+    [[ -f $root/go.mod ]]                           && s+=("Go (go build ./... / go test ./...)")
+    [[ -f $root/PKGBUILD ]]                         && s+=("Arch package (makepkg -sif)")
+    [[ -f $root/flake.nix ]]                        && s+=("Nix flake (nix build / nix flake check)")
+    [[ -f $root/Makefile ]]                         && s+=("Make (see Makefile targets)")
+    (( ${#s[@]} )) && printf '%s\n' "${s[@]}" || echo "unknown — fill in manually"
+}
+
+cmd="${1:-path}"
+case "$cmd" in
+    path)
+        if p=$(find_ctx); then echo "$p"; else
+            echo "no AI context file in this repo (ai-ctx init to scaffold)" >&2
+            exit 1
+        fi ;;
+    show)
+        p=$(find_ctx) || { echo "no AI context file here" >&2; exit 1; }
+        exec ${PAGER:-cat} "$p" ;;
+    init)
+        root=$(repo_root) || { echo "not in a git repo" >&2; exit 1; }
+        dst="$root/AGENTS.md"
+        if existing=$(find_ctx); then
+            echo "context file already exists: $existing — not overwriting" >&2
+            exit 1
+        fi
+        { echo "# AGENTS.md"
+          echo
+          echo "Conventions for AI coding agents in \`$(basename "$root")\`."
+          echo
+          echo "## Stack"
+          detect_stack "$root" | /usr/bin/sed 's/^/- /'
+          echo
+          echo "## Conventions"
+          echo "- (commit style, test command, do-not-touch paths — fill in)"
+        } > "$dst"
+        echo "scaffolded $dst — edit it; claude/gemini also read CLAUDE.md/GEMINI.md" ;;
+    *)
+        echo "usage: ai-ctx [path|show|init]" >&2
+        exit 2 ;;
+esac

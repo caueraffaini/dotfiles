@@ -1,0 +1,46 @@
+font-family = JetBrainsMono Nerd Font
+font-size = 13
+
+# Colors (Tokenized Gruvbox Material Dark)
+background = {{bg}}
+foreground = {{fg}}
+selection-background = {{bg2}}
+selection-foreground = {{fg}}
+cursor-color = {{br_yellow}}
+
+# Palette
+palette = 0={{bg}}
+palette = 1={{red}}
+palette = 2={{green}}
+palette = 3={{yellow}}
+palette = 4={{blue}}
+palette = 5={{purple}}
+palette = 6={{aqua}}
+palette = 7={{fg2}}
+palette = 8={{gray}}
+palette = 9={{br_red}}
+palette = 10={{br_green}}
+palette = 11={{br_yellow}}
+palette = 12={{br_blue}}
+palette = 13={{br_purple}}
+palette = 14={{br_aqua}}
+palette = 15={{fg}}
+
+cursor-style = block
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+window-decoration = false
+
+font-feature = +ss01
+bold-is-bright = false
+
+scrollback-limit = 100000
+copy-on-select = false
+confirm-close-surface = false
+
+keybind = super+c=copy_to_clipboard
+keybind = super+v=paste_from_clipboard

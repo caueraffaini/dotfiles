@@ -1,0 +1,6 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "tuigreet --time --remember --asterisks --cmd 'sh -c \"systemd-cat --identifier=hyprland start-hyprland\"' --theme 'border={{blue}};text={{gray}};prompt={{br_red}};time={{ui_dim}};action={{br_blue}};button={{br_yellow}};container={{bg}};input={{fg}}'"
+user = "greeter"

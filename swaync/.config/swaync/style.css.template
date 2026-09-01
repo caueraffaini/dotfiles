@@ -1,0 +1,260 @@
+/*
+ * Gruvbox Material Dark — swaync
+ *
+ * Design system tokens (refined editorial Gruvbox):
+ *   Spacing scale : 4 / 8 / 12 / 16 / 24
+ *   Radius scale  : outer = 10 (control center, widget headers)
+ *                   inner = 4  (notification card, action buttons)
+ *                   atomic = 0 (close button — sharp affordance)
+ *   Motion        : 220ms cubic-bezier(0.32, 0.72, 0, 1)  (editorial cubic-out)
+ *   Accent rule   : br-red = critical / alarm  ·  br-orange = user-toggled
+ *                   br-yellow = focus  ·  br-aqua = info
+ *   Character     : critical notifications get 3px br-red left-rail
+ *                   close button is sharp (0 radius) for precision affordance
+ */
+
+@define-color bg       {{bg}};
+@define-color bg1      {{bg1}};
+@define-color bg2      {{bg2}};
+@define-color bg3      {{bg3}};
+@define-color bg4      {{bg4}};
+@define-color fg       {{fg}};
+@define-color fg1      {{fg1}};
+@define-color fg2      {{fg2}};
+@define-color gray     {{gray}};
+@define-color red      {{red}};
+@define-color yellow   {{yellow}};
+@define-color br-red    {{br_red}};
+@define-color br-green  {{br_green}};
+@define-color br-yellow {{br_yellow}};
+@define-color br-blue   {{br_blue}};
+@define-color br-aqua   {{br_aqua}};
+@define-color br-orange {{br_orange}};
+
+* {
+    font-family: "Atkinson Hyperlegible", sans-serif;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    transition: background-color 220ms cubic-bezier(0.32, 0.72, 0, 1),
+                color            220ms cubic-bezier(0.32, 0.72, 0, 1),
+                border-color     220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ── Notification popups ── */
+.notification-row {
+    outline: none;
+    margin: 0 0 8px 0;
+}
+
+.notification-row:focus,
+.notification-row:hover {
+    background: transparent;
+}
+
+.notification {
+    background: @bg1;
+    border-radius: 4px;
+    border: 1px solid @bg3;
+    border-left: 3px solid @bg3;
+    margin: 4px 12px;
+    padding: 0;
+}
+
+.notification-content {
+    background: transparent;
+    padding: 12px;
+    border-radius: 4px;
+}
+
+/* Sharp close button — editorial precision affordance */
+.close-button {
+    background: @bg2;
+    color: @fg2;
+    border-radius: 0;
+    margin: 8px 8px 0 0;
+    padding: 0 4px;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+.close-button:hover {
+    background: @br-red;
+    color: @bg;
+}
+
+.notification-default-action,
+.notification-action {
+    padding: 8px;
+    background: transparent;
+    border-radius: 4px;
+    color: @fg;
+}
+
+.notification-default-action:hover,
+.notification-action:hover {
+    background: @bg2;
+}
+
+.notification-default-action {
+    border-radius: 4px;
+}
+
+.notification-default-action:not(:only-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.notification-action {
+    border-radius: 0;
+    border-top: 1px solid @bg2;
+    color: @br-blue;
+}
+
+.notification-action:first-child {
+    border-bottom-left-radius: 4px;
+}
+
+.notification-action:last-child {
+    border-bottom-right-radius: 4px;
+}
+
+.image {
+    border-radius: 4px;
+}
+
+/* Typography hierarchy: summary (heading) > body > time (meta) */
+.summary {
+    font-family: "EB Garamond", serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: @fg;
+    letter-spacing: 0.2px;
+}
+
+.time {
+    font-size: 11px;
+    color: @gray;
+}
+
+.body {
+    font-size: 13px;
+    color: @fg1;
+}
+
+/* Urgency — left-rail accent encodes severity at a glance */
+.low      .summary { color: @fg1; }
+.normal   .summary { color: @fg;  }
+
+.critical {
+    border-color: @br-red;
+    border-left-color: @br-red;
+    border-left-width: 3px;
+    animation: critical-pulse 800ms cubic-bezier(0.32, 0.72, 0, 1) 1 forwards;
+}
+
+@keyframes critical-pulse {
+    0%   { opacity: 1.0; }
+    50%  { opacity: 0.5; }
+    100% { opacity: 1.0; }
+}
+
+.critical .summary {
+    color: @br-red;
+    letter-spacing: 0.2px;
+}
+
+progressbar,
+progress {
+    background: @bg2;
+    border-radius: 0;
+    min-height: 4px;
+}
+
+progress {
+    background: @br-aqua;
+}
+
+/* ── Control center panel ── */
+.control-center {
+    background: @bg;
+    border-radius: 10px;
+    border: 1px solid @bg3;
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.control-center-list-placeholder {
+    color: @gray;
+    font-style: italic;
+}
+
+.floating-notifications.background {
+    background: transparent;
+}
+
+.blank-window {
+    background: transparent;
+}
+
+/* ── Widgets ── */
+.widget-title {
+    background: @bg1;
+    padding: 12px 16px;
+    border-radius: 10px 10px 0 0;
+    border-bottom: 1px solid @bg2;
+}
+
+.widget-title > label {
+    font-family: "EB Garamond", serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: @br-yellow;
+    letter-spacing: 0.4px;
+}
+
+.widget-title > button {
+    background: @bg2;
+    color: @fg2;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+}
+
+.widget-title > button:hover {
+    background: @br-aqua;
+    color: @bg;
+}
+
+.widget-dnd {
+    background: @bg1;
+    padding: 12px 16px;
+    border-bottom: 1px solid @bg2;
+}
+
+/* DND switch — pill, user-toggled accent (br-orange). radius=4 (inner token) */
+.widget-dnd > switch {
+    background: @bg2;
+    border-radius: 4px;
+    border: none;
+    min-height: 20px;
+}
+
+.widget-dnd > switch:checked {
+    background: @br-orange;
+}
+
+.widget-dnd > switch slider {
+    background: @fg;
+    border-radius: 10px;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.widget-dnd > label {
+    color: @fg1;
+    font-size: 13px;
+}

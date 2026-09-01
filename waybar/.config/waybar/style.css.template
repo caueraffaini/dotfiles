@@ -1,0 +1,226 @@
+/*
+ * Gruvbox Material Dark — waybar
+ *
+ * Design system tokens (foundation pass — refined editorial Gruvbox):
+ *   Spacing scale  : 4 / 8 / 12 / 16 / 24
+ *   Radius scale   : outer = 10 (bar, panel)  ·  inner = 4 (module, button)  ·  atomic = 0
+ *   Accent rule    : br-yellow = active focus
+ *                    br-orange = user-toggled state (DND, idle-inhibit)
+ *                    br-red    = critical / alarm only
+ *                    br-aqua   = informational accent
+ */
+
+@define-color bg       {{bg}};
+@define-color bg1      {{bg1}};
+@define-color bg2      {{bg2}};
+@define-color bg3      {{bg3}};
+@define-color bg4      {{bg4}};
+@define-color fg       {{fg}};
+@define-color fg1      {{fg1}};
+@define-color fg2      {{fg2}};
+@define-color gray     {{gray}};
+@define-color red      {{red}};
+@define-color green    {{green}};
+@define-color yellow   {{yellow}};
+@define-color blue     {{blue}};
+@define-color purple   {{purple}};
+@define-color aqua     {{aqua}};
+@define-color orange   {{orange}};
+@define-color br-red    {{br_red}};
+@define-color br-green  {{br_green}};
+@define-color br-yellow {{br_yellow}};
+@define-color br-blue   {{br_blue}};
+@define-color br-purple {{br_purple}};
+@define-color br-aqua   {{br_aqua}};
+@define-color br-orange {{br_orange}};
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Atkinson Hyperlegible", sans-serif;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    transition: background-color 220ms cubic-bezier(0.32, 0.72, 0, 1),
+                color            220ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+window#waybar {
+    background-color: transparent;
+}
+
+window#waybar > box {
+    background-color: @bg;
+    color: @fg;
+    border-radius: 10px;
+    border: 1px solid @bg3;
+}
+
+/* Module base — standalone modules outside groups */
+#tray {
+    background-color: @bg;
+    color: @fg;
+    padding: 0 4px;
+    margin: 0;
+    border-radius: 4px;
+}
+
+/* Group shells — colorful themed backgrounds */
+#left-group {
+    background-color: @yellow;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+#media {
+    background-color: @purple;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+#connectivity {
+    background-color: @blue;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+#cpu-cluster {
+    background-color: @green;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+#gpu-cluster {
+    background-color: @aqua;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+#system-right {
+    background-color: @orange;
+    border-radius: 6px;
+    padding: 0 2px;
+    margin: 4px 2px;
+}
+
+/* Inner modules: transparent bg, dark text (bg color) */
+#left-group > widget > *,
+#media > widget > *,
+#connectivity > widget > *,
+#cpu-cluster > widget > *,
+#gpu-cluster > widget > *,
+#system-right > widget > * {
+    background-color: transparent;
+    color: @bg;
+    margin: 0 1px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+/* Workspaces — Transparency level styling */
+#workspaces {
+    padding: 0 4px;
+}
+
+#workspaces button {
+    background-color: @bg;
+    color: @yellow;
+    padding: 0;
+    margin: 2px 2px;
+    border-radius: 3px;
+    min-width: 12px;
+    min-height: 12px;
+    font-size: 10px;
+    opacity: 0.4;
+}
+
+#workspaces button:hover {
+    opacity: 0.7;
+}
+
+#workspaces button.active {
+    opacity: 1.0;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.2);
+}
+
+#workspaces button.urgent {
+    background-color: @br-red;
+    opacity: 1;
+}
+
+/* Window title — italic, lower contrast */
+#window {
+    color: @fg1;
+    font-style: italic;
+    font-family: "EB Garamond", serif;
+    font-size: 15px;
+}
+
+/* Clock */
+#clock {
+    color: @br-yellow;
+    font-weight: bold;
+    padding: 0 16px;
+    font-family: "EB Garamond", serif;
+    font-size: 16px;
+}
+
+/* Status Colors Overrides (Icons/Text only) */
+#cpu.warning, #memory.warning, #custom-battery.warning,
+#custom-syshealth.warn {
+    color: @br-orange;
+}
+
+#cpu.critical, #memory.critical, #temperature.critical, #custom-battery.critical,
+#custom-syshealth.critical {
+    color: @br-red;
+}
+
+#pulseaudio.muted, #network.disconnected, #custom-notification.dnd,
+#custom-bluetooth-batt.off, #custom-bluetooth-batt.disconnected,
+#custom-vpn.disconnected {
+    color: @bg;
+}
+
+#custom-vpn.connected,
+#custom-backlight.nightlight-active {
+    color: @br-orange;
+}
+
+/* Spotify / MPRIS specific */
+#media > widget > #custom-spotify,
+#media > widget > #custom-spotify-play,
+#media > widget > #custom-spotify-shuffle,
+#media > widget > #custom-spotify-prev,
+#media > widget > #custom-spotify-next,
+#media > widget > #custom-spotify-repeat {
+    background-color: @bg;
+    color: @purple;
+    padding: 0 4px;
+    margin: 2px 2px;
+}
+
+#media > widget > #custom-spotify {
+    padding: 0 6px;
+    min-width: 200px;
+}
+
+/* Tray */
+#tray { padding: 2px 8px; }
+#tray > .passive        { -gtk-icon-effect: dim; }
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @br-red;
+    border-radius: 4px;
+}
+
+@keyframes blink {
+    to { color: @br-red; }
+}

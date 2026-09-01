@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# pre-push validation gate (A3a) — block pushing dotfiles that would not
+# stow cleanly or that contain a shell/lua syntax error. Tracked in-repo;
+# enable once with:  git config core.hooksPath .githooks
+#
+# Checks (any failure aborts the push):
+#   1. ./install.sh -n          stow-conflict / unknown-pkg simulation
+#   2. bash -n                  every tracked shell script (ext or shebang)
+#   3. luac -p                  every tracked *.lua
+#   4. shellcheck / luacheck    only if installed (optional lint upgrade)
+set -uo pipefail
+
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+fail=0
+say()  { printf '  pre-push: %s\n' "$*" >&2; }
+bad()  { printf '  pre-push: ✗ %s\n' "$*" >&2; fail=1; }
+
+TMPDIR="$(mktemp -d /tmp/dotfiles-prepush.XXXXXX)"
+trap 'rm -rf "$TMPDIR"' EXIT INT TERM
+
+# 1. stow simulation
+if ! ./install.sh -n >"$TMPDIR/stow.log" 2>&1; then
+    bad "install.sh -n failed:"; sed 's/^/    /' "$TMPDIR/stow.log" >&2
+fi
+
+# Collect tracked shell scripts: *.sh OR a bash/sh shebang on line 1.
+mapfile -t shfiles < <(
+    git ls-files -z | while IFS= read -r -d '' f; do
+        case "$f" in
+            *.sh) printf '%s\n' "$f" ;;
+            *) [[ -f $f ]] && IFS= read -r l < "$f" 2>/dev/null \
+                 && [[ $l == '#!'*sh ]] && printf '%s\n' "$f" ;;
+        esac
+    done
+)
+
+# 2. bash -n syntax
+for f in "${shfiles[@]:-}"; do
+    [[ -z $f ]] && continue
+    bash -n "$f" 2>"$TMPDIR/sh.log" || { bad "bash -n: $f"; sed 's/^/    /' "$TMPDIR/sh.log" >&2; }
+done
+
+# 3. lua syntax (luac -p; hl runtime has no offline linter — syntax only)
+if command -v luac >/dev/null 2>&1; then
+    while IFS= read -r -d '' f; do
+        luac -p "$f" 2>"$TMPDIR/lua.log" || { bad "luac -p: $f"; sed 's/^/    /' "$TMPDIR/lua.log" >&2; }
+    done < <(git ls-files -z '*.lua')
+else
+    say "luac missing — skipped lua syntax check"
+fi
+
+# 4. theme template validation
+if [[ -f "theme/.config/theme/render-theme.py" ]] && command -v python3 >/dev/null 2>&1; then
+    python3 theme/.config/theme/render-theme.py --check >"$TMPDIR/theme.log" 2>&1 || { bad "render-theme.py --check failed:"; sed 's/^/    /' "$TMPDIR/theme.log" >&2; }
+fi
+
+# 5. optional lint (only if installed) — ADVISORY, never blocks. The hard
+# gate above is real breakage (stow conflict, syntax error). Inherited
+# config scripts carry style nits / framework globals (hl, vim) that are
+# not bugs; .luacheckrc tames the lua false-positives. Push still proceeds.
+adv() { printf '  pre-push: ~ %s\n' "$*" >&2; }
+if command -v shellcheck >/dev/null 2>&1; then
+    for f in "${shfiles[@]:-}"; do
+        [[ -z $f ]] && continue
+        shellcheck -x "$f" >"$TMPDIR/sc.log" 2>&1 || { adv "shellcheck (advisory): $f"; sed 's/^/    /' "$TMPDIR/sc.log" >&2; }
+    done
+fi
+if command -v luacheck >/dev/null 2>&1; then
+    while IFS= read -r -d '' f; do
+        luacheck -q "$f" >"$TMPDIR/lc.log" 2>&1 || { adv "luacheck (advisory): $f"; sed 's/^/    /' "$TMPDIR/lc.log" >&2; }
+    done < <(git ls-files -z '*.lua')
+fi
+
+if (( fail )); then
+    say "PUSH BLOCKED — fix the above (or: git push --no-verify to override)"
+    exit 1
+fi
+say "✓ all checks passed"
+exit 0

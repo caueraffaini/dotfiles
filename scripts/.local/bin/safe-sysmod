@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# safe-sysmod — wrap a risky system change in a snapper pre/post pair so it
+# is one command to roll back. Encodes the "Btrfs snapshot before risky mods"
+# safety rule as a tool instead of discipline.
+#
+#   safe-sysmod <command> [args...]
+#
+# Pre-snapshot → run command → post-snapshot. Prints + notifies the exact
+# rollback one-liner. Command exit code is preserved. A non-zero exit keeps
+# the snapshots and warns (that is exactly when you want the rollback).
+#
+# snapper create needs root → run from an interactive shell so sudo can
+# prompt. If the pre-snapshot can't be taken, the command is NOT run.
+set -uo pipefail
+
+CFG=root
+SUDO=/usr/bin/sudo
+SNAPPER=/usr/bin/snapper
+
+if [[ $# -eq 0 ]]; then
+    echo "usage: safe-sysmod <command> [args...]" >&2
+    exit 2
+fi
+
+desc="safe-sysmod: $*"
+
+note() { command -v notify-send >/dev/null 2>&1 && notify-send "$@" || true; }
+
+pre=$("$SUDO" "$SNAPPER" -c "$CFG" create -t pre -p -d "$desc" 2>/dev/null)
+if ! [[ "$pre" =~ ^[0-9]+$ ]]; then
+    echo "safe-sysmod: pre-snapshot failed — command NOT run" >&2
+    note -u critical "safe-sysmod" "pre-snapshot failed — command not run"
+    exit 1
+fi
+echo "safe-sysmod: pre-snapshot #$pre — running: $*" >&2
+
+"$@"
+rc=$?
+
+post=$("$SUDO" "$SNAPPER" -c "$CFG" create -t post --pre-number "$pre" -p -d "$desc" 2>/dev/null)
+if ! [[ "$post" =~ ^[0-9]+$ ]]; then
+    echo "safe-sysmod: post-snapshot failed; pre #$pre kept. rc=$rc" >&2
+    note -u critical "safe-sysmod" "post-snapshot failed; pre #$pre kept (rc=$rc)"
+    exit "$rc"
+fi
+
+rollback="$SUDO $SNAPPER -c $CFG undochange ${pre}..${post}"
+discard="$SUDO $SNAPPER -c $CFG delete ${pre} ${post}"
+
+if (( rc == 0 )); then
+    echo "safe-sysmod: OK (rc=0). snapshots ${pre}..${post}" >&2
+    echo "  rollback: $rollback" >&2
+    echo "  discard : $discard"  >&2
+    note -u normal "safe-sysmod" "OK — ${pre}..${post}\nrollback: $rollback"
+else
+    echo "safe-sysmod: command FAILED (rc=$rc). snapshots ${pre}..${post}" >&2
+    echo "  rollback: $rollback" >&2
+    note -u critical "safe-sysmod" "FAILED rc=$rc — roll back:\n$rollback"
+fi
+
+exit "$rc"

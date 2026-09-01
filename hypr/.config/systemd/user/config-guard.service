@@ -1,0 +1,12 @@
+[Unit]
+Description=Watch dotfiles config dirs and parse-check on change
+After=graphical-session.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5
+ExecStart=%h/.config/hypr/scripts/config-guard.sh
+
+[Install]
+WantedBy=graphical-session.target
