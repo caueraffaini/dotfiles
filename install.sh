@@ -109,17 +109,14 @@ stow_std() {
 greetd_install() {
   note "greetd -> /etc/greetd (root target, needs sudo)"
   if [[ $DRY -eq 1 ]]; then
-    STOW -n -v -d "$REPO" -t / "$MODE_FLAG" greetd 2>&1 | sed 's/^/   /' || true
+    echo "   would install $REPO/greetd/etc/greetd/config.toml -> /etc/greetd/config.toml"
     STOWED+=("greetd(dry)")
     return
   fi
   if ! command -v sudo >/dev/null 2>&1; then
     note "sudo not found — skipping greetd"; SKIPPED+=("greetd"); return
   fi
-  if [[ $BACKUP -eq 1 && $MODE != delete ]]; then
-    backup_conflicts "greetd"
-  fi
-  if sudo "${STOW_CMD[@]}" -v -d "$REPO" -t / "$MODE_FLAG" greetd 2>&1 | sed 's/^/   /'; then
+  if sudo mkdir -p /etc/greetd && sudo install -m 644 -o root -g root "$REPO/greetd/etc/greetd/config.toml" /etc/greetd/config.toml; then
     STOWED+=("greetd")
   else
     SKIPPED+=("greetd")

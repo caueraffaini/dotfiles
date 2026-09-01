@@ -6,28 +6,45 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Secrets, private keys, and credential stores
+# Machine-local overlays & secret extensions
+*.local
+*.local.*
+*.secret
+*.token
+*.key
+*.pem
+*.pfx
+*.p12
+*.age
+*.sops
 .env
 .env.*
 !.env.example
-*.pem
-*.key
-*.pfx
-*.p12
-*.kdbx
+*.conf.local
+local-overrides/
+
+# Private Credentials & Token Stores
+credentials.json
+service-account*.json
+rclone.conf
 id_rsa*
 id_ed25519*
 id_ecdsa*
 id_dsa*
-*.age
-*.sops
-*.secret
-*.token
+.netrc
+.npmrc
+.pypirc
+*.kdbx
+*.ovpn
 
-# Local logs & AI transcript caches
+# Runtime State & Logs
 *.log
-.system_generated/
 ai-logs/
+.system_generated/
+.*_history
+.history
+.python_history
+.lesshst
 
 # Editor temporary & swap files
 *~
@@ -39,21 +56,3 @@ ai-logs/
 # Machine-local / dynamic runtime carve-outs
 waybar/.config/waybar/k10temp
 hypr/.config/hypr/hypridle.conf
-
-# Shell history & state
-.*_history
-.history
-.lesshst
-.python_history
-
-# Cloud, auth, and credential stores
-.netrc
-.npmrc
-.pypirc
-credentials.json
-service-account*.json
-*.ovpn
-*.conf.local
-rclone.conf
-
-

@@ -5,6 +5,7 @@
 
 CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/cliphist-thumbs"
 mkdir -p "$CACHE"
+chmod 700 "$CACHE"
 
 build_entries() {
     while IFS= read -r entry; do

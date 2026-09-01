@@ -14,8 +14,9 @@ sudo pacman -Syu --needed base-devel git stow zsh
 
 ### Install an AUR Helper (e.g. `paru` or `yay`)
 ```bash
-git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-cd /tmp/paru-bin && makepkg -si
+BUILD_DIR=$(mktemp -d)
+git clone https://aur.archlinux.org/paru-bin.git "$BUILD_DIR"
+cd "$BUILD_DIR" && makepkg -si
 ```
 
 ---

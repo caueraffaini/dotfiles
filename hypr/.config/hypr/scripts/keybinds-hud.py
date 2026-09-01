@@ -14,7 +14,8 @@ import gi
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk, Gdk, GLib
 
-PID_FILE = os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "hypr-keybinds-hud.pid")
+PID_FILE = os.path.join(os.environ.get("XDG_RUNTIME_DIR") or f"/tmp/runtime-{os.getuid()}", "hypr-keybinds-hud.pid")
+os.makedirs(os.path.dirname(PID_FILE), mode=0o700, exist_ok=True)
 
 # Single-instance toggle: if already running, kill existing and exit
 if os.path.exists(PID_FILE):

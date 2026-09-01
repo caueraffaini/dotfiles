@@ -10,7 +10,8 @@
 
 set -euo pipefail
 
-SAVED_WS_FILE="${XDG_RUNTIME_DIR:-/tmp}/hypr-lid-saved-workspaces"
+SAVED_WS_FILE="${XDG_RUNTIME_DIR:-/tmp/runtime-${UID:-$(id -u)}}/hypr-lid-saved-workspaces"
+mkdir -p "$(dirname "$SAVED_WS_FILE")"
 LAPTOP_OUTPUT="eDP-1"
 
 LAPTOP_MODE="preferred"

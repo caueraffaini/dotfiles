@@ -2,7 +2,8 @@
 set -euo pipefail
 
 CONF="$HOME/.config/nightlight.conf"
-STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/nightlight.state"
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp/runtime-${UID:-$(id -u)}}/nightlight.state"
+mkdir -p "$(dirname "$STATE_FILE")"
 
 # Default configuration values
 NIGHTLIGHT_LAT="0.0"

@@ -4,7 +4,8 @@
 # Monitors low battery and dims backlight at 20% (→30%) and 10% (→0%).
 
 BL_DEV="/sys/class/backlight/amdgpu_bl1"
-BRIGHT_SAVE="${XDG_RUNTIME_DIR:-/tmp}/power-sync.savedbright"
+BRIGHT_SAVE="${XDG_RUNTIME_DIR:-/tmp/runtime-${UID:-$(id -u)}}/power-sync.savedbright"
+mkdir -p "$(dirname "$BRIGHT_SAVE")"
 HYPRIDLE_CONF_DIR="$HOME/.config/hypr"
 
 
