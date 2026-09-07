@@ -44,7 +44,7 @@ hl.bind(mainMod .. " + L",         hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + M",         hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"))
 hl.bind(mainMod .. " + SHIFT + M", hl.dsp.exec_cmd("~/.local/bin/sysmenu"))
 hl.bind(mainMod .. " + N",         hl.dsp.exec_cmd("swaync-client -t -sw"))
-hl.bind("XF86PowerOff",            hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"))
+hl.bind("XF86PowerOff",            hl.dsp.exec_cmd("~/.config/hypr/scripts/powermenu.sh"), { submap_universal = true })
 
 -- Window Management & Tiling
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
@@ -75,8 +75,8 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- Laptop Lid Switch (Clamshell mode)
-hl.bind("switch:on:Lid Switch",  hl.dsp.exec_cmd("~/.config/hypr/scripts/lid-handler.sh close"), { locked = true })
-hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("~/.config/hypr/scripts/lid-handler.sh open"),  { locked = true })
+hl.bind("switch:on:Lid Switch",  hl.dsp.exec_cmd("~/.config/hypr/scripts/lid-handler.sh close"), { locked = true, submap_universal = true })
+hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd("~/.config/hypr/scripts/lid-handler.sh open"),  { locked = true, submap_universal = true })
 
 -- Applications & TUI Tools
 hl.bind(mainMod .. " + B",         hl.dsp.exec_cmd("flatpak run org.mozilla.firefox"))
@@ -91,19 +91,32 @@ hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("~/.config/hypr/clipboard.sh"
 hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("hyprpicker -a"))
 
 -- Screenshots
-hl.bind("Print",                   hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh fullscreen"))
-hl.bind("SHIFT + Print",           hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh region"))
+hl.bind("Print",                   hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh fullscreen"), { submap_universal = true })
+hl.bind("SHIFT + Print",           hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh region"),     { submap_universal = true })
 hl.bind(mainMod .. " + Print",     hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh annotate"))
 
 -- Media & Hardware Keys
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+ && pkill -RTMIN+9 waybar"),  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%- && pkill -RTMIN+9 waybar"),  { locked = true, repeating = true })
+hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true, submap_universal = true })
+hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true, submap_universal = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true, submap_universal = true })
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true, submap_universal = true })
+hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+ && pkill -RTMIN+9 waybar"),  { locked = true, repeating = true, submap_universal = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%- && pkill -RTMIN+9 waybar"),  { locked = true, repeating = true, submap_universal = true })
 
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),        { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"),  { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"),  { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),    { locked = true })
+hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl next"),        { locked = true, submap_universal = true })
+hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"),  { locked = true, submap_universal = true })
+hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"),  { locked = true, submap_universal = true })
+hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),    { locked = true, submap_universal = true })
+
+-- Gaming Mode (Inhibits Super key shortcuts while gaming)
+hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+hl.bind(mainMod .. " + F1",        hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+hl.bind(mainMod .. " + Pause",     hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+
+hl.define_submap("game", function()
+	-- Restore shortcuts / Exit game mode
+	hl.bind(mainMod .. " + SHIFT + G", hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+	hl.bind(mainMod .. " + F1",        hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+	hl.bind(mainMod .. " + Pause",     hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+	hl.bind(mainMod .. " + Escape",    hl.dsp.exec_cmd("~/.config/hypr/scripts/gamemode-toggle.sh"))
+end)

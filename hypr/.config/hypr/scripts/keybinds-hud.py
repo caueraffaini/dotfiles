@@ -54,6 +54,7 @@ COLUMNS = [
                 (["SUPER", "L"], "Lock Session (Hyprlock)"),
                 (["SUPER", "M"], "Power Menu (Powermenu)"),
                 (["SUPER", "SHIFT", "M"], "System Actions (Sysmenu)"),
+                (["SUPER", "SHIFT", "G"], "Toggle Gaming Mode (Inhibit Super)"),
                 (["SUPER", "N"], "Notification Center (SwayNC)"),
             ],
         },

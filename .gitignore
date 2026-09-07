@@ -8,6 +8,7 @@ __pycache__/
 
 # Machine-local overlays & secret extensions
 *.local
+!scripts/.local/
 *.local.*
 *.secret
 *.token
